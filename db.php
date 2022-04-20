@@ -7,4 +7,5 @@
 	if ($connect->connect_error){
 		die("連線資料庫失敗: " . $connect->connect_error);
 	}
+	session_start();
 ?>
