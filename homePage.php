@@ -5,32 +5,74 @@ require_once 'db.php';
 ?>
 
 <?php
-// 將書籍資料載入 
-// 設置一個空陣列來放資料
-$datas = array();
-// sql語法存在變數中
-$sql = "SELECT * FROM books";
+if (!isset($_GET["category"]) && !isset($_GET["keyword"])) {
+    // 將書籍資料載入 
+    // 設置一個空陣列來放資料
+    $datas = array();
+    // sql語法存在變數中
+    $sql = "SELECT * FROM books";
 
-// 用mysqli_query方法執行(sql語法)將結果存在變數中
-$result = $connect->query($sql);
+    // 用mysqli_query方法執行(sql語法)將結果存在變數中
+    $result = $connect->query($sql);
 
 
-// 如果有資料
-if ($result) {
-    // mysqli_num_rows方法可以回傳我們結果總共有幾筆資料
-    if (mysqli_num_rows($result) > 0) {
-        // 取得大於0代表有資料
-        // while迴圈會根據資料數量，決定跑的次數
-        // mysqli_fetch_assoc方法可取得一筆值
-        while ($row = mysqli_fetch_assoc($result)) {
-            // 每跑一次迴圈就抓一筆值，最後放進data陣列中
-            $datas[] = $row;
+    // 如果有資料
+    if ($result) {
+        // mysqli_num_rows方法可以回傳我們結果總共有幾筆資料
+        if (mysqli_num_rows($result) > 0) {
+            // 取得大於0代表有資料
+            // while迴圈會根據資料數量，決定跑的次數
+            // mysqli_fetch_assoc方法可取得一筆值
+            while ($row = mysqli_fetch_assoc($result)) {
+                // 每跑一次迴圈就抓一筆值，最後放進data陣列中
+                $datas[] = $row;
+            }
         }
+        // 釋放資料庫查到的記憶體
+        mysqli_free_result($result);
+    } else {
+        echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
     }
-    // 釋放資料庫查到的記憶體
-    mysqli_free_result($result);
-} else {
-    echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
+
+    $datas = array_reverse($datas);
+}
+?>
+
+<?php
+// 書本分類
+if (isset($_GET["category"]) || isset($_GET["keyword"])) {
+    $cate = $_GET["category"];
+    $keyword = $_GET["keyword"];
+
+    // 設置一個空陣列來放資料
+    $datas = array();
+    // sql語法存在變數中
+    if ($cate == "全部圖書" && $keyword != "") {
+        $sql = "SELECT * FROM books WHERE books.bookname LIKE '%$keyword%'";
+    } else {
+        $sql = "SELECT * FROM books WHERE books.category = '$cate' AND books.bookname LIKE '%$keyword%'";
+    }
+
+    // 用mysqli_query方法執行(sql語法)將結果存在變數中
+    $result = $connect->query($sql);
+
+    // 如果有資料
+    if ($result) {
+        // mysqli_num_rows方法可以回傳我們結果總共有幾筆資料
+        if (mysqli_num_rows($result) > 0) {
+            // 取得大於0代表有資料
+            // while迴圈會根據資料數量，決定跑的次數
+            // mysqli_fetch_assoc方法可取得一筆值
+            while ($row = mysqli_fetch_assoc($result)) {
+                // 每跑一次迴圈就抓一筆值，最後放進data陣列中
+                $datas[] = $row;
+            }
+        }
+        // 釋放資料庫查到的記憶體
+        mysqli_free_result($result);
+    } else {
+        echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
+    }
 }
 ?>
 
@@ -145,11 +187,15 @@ if ($result) {
                 </div>
             </row>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center display">
+
                 <?php if (!empty($datas)) : ?>
                     <!-- 資料 as key(下標) => row(資料的row) -->
                     <?php foreach ($datas as $key => $book) : ?>
                         <div class="col mb-5" id=<?php echo $book['bkid'] ?>>
                             <div class="card h-100">
+                                <?php if ($book['status'] == 2) : ?>
+                                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">New</div>
+                                <?php endif; ?>
                                 <!-- Product image-->
                                 <img class="card-img-top" src=<?php echo $book['img']; ?> alt="..." />
                                 <!-- Product details-->
@@ -164,38 +210,9 @@ if ($result) {
                             </div>
                         </div>
                     <?php endforeach; ?>
+                <?php else: ?>
+                    <h4>查無資料</h4>
                 <?php endif; ?>
-                <!-- 有新書時可以用 -->
-                <!-- <div class="col mb-5">
-                        <div class="card h-100"> -->
-                <!-- Sale badge-->
-                <!-- <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div> -->
-                <!-- Product image-->
-                <!-- <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> -->
-                <!-- Product details-->
-                <!-- <div class="card-body p-4">
-                                <div class="text-center"> -->
-                <!-- Product name-->
-                <!-- <h5 class="fw-bolder">Special Item</h5> -->
-                <!-- Product reviews-->
-                <!-- <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div> -->
-                <!-- Product price-->
-                <!-- <span class="text-muted text-decoration-line-through">$20.00</span>
-                                    $18.00
-                                </div>
-                            </div> -->
-                <!-- Product actions-->
-                <!-- <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                            </div>
-                        </div>
-                    </div> -->
             </div>
         </div>
     </section>

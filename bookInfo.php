@@ -32,7 +32,7 @@ if ($result) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title><?php echo $datas['bookname']?></title>
+    <title><?php echo $datas['bookname'] ?></title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="book.ico" />
     <!-- Bootstrap icons-->
@@ -43,8 +43,8 @@ if ($result) {
 </head>
 
 <body>
-     <!-- Login section -->
-     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Login section -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -113,39 +113,44 @@ if ($result) {
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="row gx-4 gx-lg-5 align-items-center">
-                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src=<?php echo $datas['img']?> alt="..." /></div>
                 <div class="col-md-6">
+                    <img class="card-img-top mb-5 mb-md-0" src=<?php echo $datas['img'] ?> />
+                </div>
+                <div class="col-md-6">
+                    <?php if ($datas['status'] == 2) : ?>
+                        <div class="badge bg-danger text-white mb-2">New</div>
+                    <?php endif; ?>
                     <div class="small mb-1">
                         <?php
-                            if($datas['ISBN'] != ""){
-                                echo "ISBN : " . $datas['ISBN'];
-                            }
-                        ?>
-                    </div>
-                    <h1 class="display-5 fw-bolder"><?php echo $datas['bookname']?></h1>
-                    <div class="fs-5 mb-5">
-                        <span>作者: <?php echo $datas['author']?></span>
-                    </div>
-                    <p class="lead">
-                        出版商: <?php echo $datas['publisher']?><br>
-                        狀態: <?php
-                        if($datas['status'] == 0){
-                            echo "可借閱";
-                        }else{
-                            echo "已借閱";
+                        if ($datas['ISBN'] != "") {
+                            echo "ISBN : " . $datas['ISBN'];
                         }
                         ?>
+                    </div>
+                    <h1 class="display-5 fw-bolder"><?php echo $datas['bookname'] ?></h1>
+                    <div class="fs-5 mb-5">
+                        <span>作者: <?php echo $datas['author'] ?></span>
+                    </div>
+                    <p class="lead">
+                        出版商: <?php echo $datas['publisher'] ?><br>
+                        狀態: <?php
+                            if ($datas['status'] == 0) {
+                                echo "可借閱";
+                            } else {
+                                echo "已借閱";
+                            }
+                            ?>
                         <br>
                     </p>
                     <div class="d-flex">
                         <button class="btn btn-outline-dark flex-shrink-0" type="button">
                             <i class="bi bi-journal-plus"></i>
                             <?php
-                            if($datas['status'] == 0){
+                            if ($datas['status'] % 2 == 0) {
                                 echo "借閱";
-                            }else{
+                            } else {
                                 echo "預約";
-                            }?>
+                            } ?>
                         </button>
                     </div>
                 </div>

@@ -67,7 +67,7 @@ if ($result) {
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Publisher</span>
-                            <input type="password" class="form-control" id="pub">
+                            <input type="text" class="form-control" id="pub">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Author</span>
@@ -107,25 +107,26 @@ if ($result) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="d-none" id="bkid_e"></div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">ISBN</span>
-                            <input type="text" class="form-control" id="ISBN">
+                            <input type="text" class="form-control" id="ISBN_e">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Publisher</span>
-                            <input type="password" class="form-control" id="pub">
+                            <input type="text" class="form-control" id="pub_e">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Author</span>
-                            <input type="text" class="form-control" id="author">
+                            <input type="text" class="form-control" id="author_e">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Book Name</span>
-                            <input type="text" class="form-control" id="bookname">
+                            <input type="text" class="form-control" id="bookname_e">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Category</span>
-                            <select class="form-select cate">
+                            <select class="form-select cate_e">
                                 <option selected>圖書</option>
                                 <option>期刊</option>
                                 <option>學位論文</option>
@@ -133,7 +134,7 @@ if ($result) {
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Status</span>
-                            <select class="form-select status">
+                            <select class="form-select status_e">
                                 <option selected value="2">新書</option>
                                 <option value="0">借閱</option>
                                 <option value="1">預約</option>
@@ -141,12 +142,42 @@ if ($result) {
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Image Path</span>
-                            <input type="text" class="form-control" id="img">
+                            <input type="text" class="form-control" id="img_e">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
+                        <script>
+                            $('.close, .btn-close').click(function() {
+                                $("#editBooks .modal-body input").val("");
+                                $("#datatablesSimple > tbody input:checkbox").prop("checked", false);
+                            });
+                        </script>
                         <button type="button" class="btn btn-primary" id="changeBook">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- delete alert -->
+        <div class="modal fade" id="warn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="warningLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Be Careful!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="warning_content"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">No</button>
+                        <script>
+                            $('.close').click(function() {
+                                $("input:checkbox").prop("checked", false);
+                            });
+                        </script>
+                        <button type="button" class="btn btn-danger" id="delete">Yes</button>
                     </div>
                 </div>
             </div>
@@ -215,10 +246,10 @@ if ($result) {
                                 <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addBooks">
                                     新增
                                 </button>
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editBooks">
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editBooks" id="eBtn">
                                     編輯
                                 </button>
-                                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteBooks">
+                                <button class="btn btn-outline-danger" id="warningDelete" data-bs-toggle="modal" data-bs-target="#warn">
                                     刪除
                                 </button>
                                 <div class="m-2"></div>
