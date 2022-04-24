@@ -9,9 +9,9 @@ function searchBook(){
     var kw = $(".keyword").val()
     var ct = $("#bookCate").val()
     if (kw == "") {
-        window.location.href = "http://localhost:8888/homePage.php";
+        window.location.href = "http://localhost:9999/homePage.php";
     } else {
-        window.location.href = "http://localhost:8888/homePage.php?keyword="+kw+"&category="+ct;
+        window.location.href = "http://localhost:9999/homePage.php?keyword="+kw+"&category="+ct;
         // $.post("apis/search.php", {
         //     keyword: kw,
         //     cate: ct

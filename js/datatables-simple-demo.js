@@ -10,4 +10,11 @@ window.addEventListener('DOMContentLoaded', event => {
             ]
         });
     }
+
+    const bookRecord = document.getElementById('borrowRecord');
+    if (bookRecord) {
+        new simpleDatatables.DataTable(bookRecord,{
+            sortable: false
+        });
+    }
 });

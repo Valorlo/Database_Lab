@@ -10,7 +10,7 @@ if (!isset($_GET["category"]) && !isset($_GET["keyword"])) {
     // 設置一個空陣列來放資料
     $datas = array();
     // sql語法存在變數中
-    $sql = "SELECT * FROM books";
+    $sql = "SELECT * FROM books ORDER BY books.status DESC";
 
     // 用mysqli_query方法執行(sql語法)將結果存在變數中
     $result = $connect->query($sql);
@@ -34,7 +34,6 @@ if (!isset($_GET["category"]) && !isset($_GET["keyword"])) {
         echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
     }
 
-    $datas = array_reverse($datas);
 }
 ?>
 
@@ -48,9 +47,9 @@ if (isset($_GET["category"]) || isset($_GET["keyword"])) {
     $datas = array();
     // sql語法存在變數中
     if ($cate == "全部圖書" && $keyword != "") {
-        $sql = "SELECT * FROM books WHERE books.bookname LIKE '%$keyword%'";
+        $sql = "SELECT * FROM books WHERE books.bookname LIKE '%$keyword%' ORDER BY books.status DESC";
     } else {
-        $sql = "SELECT * FROM books WHERE books.category = '$cate' AND books.bookname LIKE '%$keyword%'";
+        $sql = "SELECT * FROM books WHERE books.category = '$cate' AND books.bookname LIKE '%$keyword%' ORDER BY books.status DESC";
     }
 
     // 用mysqli_query方法執行(sql語法)將結果存在變數中

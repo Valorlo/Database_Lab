@@ -12,7 +12,8 @@ require_once 'db.php';
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     <?php if (isset($_SESSION["type"])) : ?>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">借書單</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="bookslip.php">借書單</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="reservation.php">預約單</a></li>
                     <?php endif;?>
                 </ul>
                 <!-- 如果沒有session表示還沒登入 -->

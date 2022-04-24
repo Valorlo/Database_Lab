@@ -7,8 +7,9 @@ require_once 'db.php';
 <?php
 // 取得特定書籍資料
 $bkid = $_GET["bkid"];
+$stdnum = $_SESSION['stdnum'];
 
-// 尋找帳號密碼
+// 尋找書籍資訊
 $sql = "SELECT * FROM books WHERE books.bkid = '$bkid'";
 
 // 用mysqli_query方法執行(sql語法)將結果存在變數中
@@ -134,7 +135,7 @@ if ($result) {
                     <p class="lead">
                         出版商: <?php echo $datas['publisher'] ?><br>
                         狀態: <?php
-                            if ($datas['status'] == 0) {
+                            if ($datas['status'] != 0) {
                                 echo "可借閱";
                             } else {
                                 echo "已借閱";
@@ -143,15 +144,38 @@ if ($result) {
                         <br>
                     </p>
                     <div class="d-flex">
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                            <i class="bi bi-journal-plus"></i>
-                            <?php
-                            if ($datas['status'] % 2 == 0) {
-                                echo "借閱";
-                            } else {
-                                echo "預約";
-                            } ?>
-                        </button>
+                        <?php
+
+                        $sql = "SELECT bookslip.status FROM bookslip, borrowing
+                            WHERE bookslip.stdnum = '$stdnum' AND bookslip.bid = borrowing.bid AND borrowing.bkid = $bkid AND DATEDIFF(bookslip.returned_date, now()) > 0";
+
+                        // 用mysqli_query方法執行(sql語法)將結果存在變數中
+                        $result = $connect->query($sql);
+                        $borrowed = array();
+
+                        // 如果有資料
+                        if ($result) {
+                            $borrowed = $result->fetch_assoc();
+                            // 釋放資料庫查到的記憶體
+                            mysqli_free_result($result);
+                        } else {
+                            echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
+                        }
+                        ?>
+                        <?php if (is_countable($borrowed) && count($borrowed) > 0) : ?>
+                            <p style="color:blue;">您已借閱</p>
+                        <?php else : ?>
+                            <button class="btn btn-outline-dark flex-shrink-0 operations" type="button">
+                                <i class="bi bi-journal-plus"></i><?php
+                                if ($datas['status'] != 0) {
+                                    echo "借閱";
+                                } else {
+                                    echo "預約";
+                                }
+                                ?>
+                            </button>
+                        <?php endif; ?>
+
                     </div>
                 </div>
             </div>
@@ -169,6 +193,7 @@ if ($result) {
     <script src="js/scripts.js"></script>
     <script src="js/login.js"></script>
     <script src="js/register.js"></script>
+    <script src="js/borrow.js"></script>
 </body>
 
 </html>

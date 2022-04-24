@@ -26,6 +26,6 @@ if ($result) {
     // 釋放資料庫查到的記憶體
     mysqli_free_result($result);
 } else {
-    echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($link);
+    echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($connect);
 }
 ?>

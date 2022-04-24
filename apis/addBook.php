@@ -20,4 +20,5 @@
     } else {
         echo false;
     }
+    mysqli_free_result($result)
 ?>
