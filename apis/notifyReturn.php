@@ -1,11 +1,11 @@
 <?php
 require_once '../db.php';
 
-// 將會員資料載入 
-// 設置一個空陣列來放資料
-$users = array();
+$bkid = $_GET['bkid'];
+
+$info = array();
 // sql語法存在變數中
-$sql = "SELECT email FROM borrower";
+$sql = "SELECT borrower.email, borrower.name FROM borrower, borrowing, bookslip WHERE borrowing.bkid = $bkid AND bookslip.bid = borrowing.bid AND borrower.stdnum = bookslip.stdnum AND bookslip.status = 0";
 
 // 用mysqli_query方法執行(sql語法)將結果存在變數中
 $result = $connect->query($sql);
@@ -20,7 +20,7 @@ if ($result) {
         // mysqli_fetch_assoc方法可取得一筆值
         while ($row = mysqli_fetch_assoc($result)) {
             // 每跑一次迴圈就抓一筆值，最後放進data陣列中
-            $users[] = $row;
+            $info[] = $row;
         }
     }
     // 釋放資料庫查到的記憶體
@@ -28,5 +28,5 @@ if ($result) {
 } else {
     echo "{$sql} 語法執行失敗，錯誤訊息: " . mysqli_error($connect);
 }
-echo json_encode($users)
+echo json_encode($info)
 ?>

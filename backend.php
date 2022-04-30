@@ -10,7 +10,6 @@ $sql = "SELECT * FROM books";
 // 用mysqli_query方法執行(sql語法)將結果存在變數中
 $result = $connect->query($sql);
 
-
 // 如果有資料
 if ($result) {
     // mysqli_num_rows方法可以回傳我們結果總共有幾筆資料
@@ -49,6 +48,12 @@ if ($result) {
         <link href="css/backend.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+        <script type="text/javascript">
+            (function() {
+                emailjs.init("qAJ1JIxo9MwzUlCBg");
+            })();
+        </script>
     </head>
 
     <body class="sb-nav-fixed">
@@ -183,6 +188,42 @@ if ($result) {
             </div>
         </div>
 
+        <!-- New Book notify -->
+        <div class="modal fade" id="notify" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="notifyLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Notify!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            要通知的書籍數量為
+                            <span class="booksLength">
+                            <?php
+                            // 將新書資料載入 
+                            // 設置一個空陣列來放資料
+                            $nb = array();
+                            // sql語法存在變數中
+                            $sql = "SELECT * FROM books Where status = 2";
+
+                            // 用mysqli_query方法執行(sql語法)將結果存在變數中
+                            $result = $connect->query($sql);
+
+                            // 如果有資料
+                            echo mysqli_num_rows($result);
+                            ?>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" id="bookNotify">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="backend.php">System Backend</a>
@@ -220,11 +261,6 @@ if ($result) {
                                 <div class="sb-nav-link-icon"><i class="bi bi-book"></i></div>
                                 Books
                             </a>
-                            <!-- 有空再補充 -->
-                            <!-- <a class="nav-link borrowers" style="cursor: pointer;">
-                                <div class="sb-nav-link-icon"><i class="bi bi-person-badge"></i></div>
-                                Borrowers
-                            </a> -->
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
@@ -243,6 +279,9 @@ if ($result) {
                                 Book Table
                             </div>
                             <div class="card-body">
+                                <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#notify">
+                                    新書通知
+                                </button>
                                 <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addBooks">
                                     新增
                                 </button>
@@ -311,7 +350,6 @@ if ($result) {
         <script src="js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-        <script src="js/backendBorrower.js"></script>
         <script src="js/dbIUD.js"></script>
     </body>
 

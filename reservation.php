@@ -65,7 +65,8 @@ if ($result) {
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" name="chkAll"></th>
+                                <th><input type="checkbox" name="chkAll" ></th>
+                                <th>Reservation Id</th>
                                 <th>Stdnum</th>
                                 <th>Book Id</th>
                                 <th>Reserved Date</th>
@@ -74,6 +75,7 @@ if ($result) {
                         <tfoot>
                             <tr>
                                 <th><input type="checkbox" name="chkAll"></th>
+                                <th>Reservation Id</th>
                                 <th>Stdnum</th>
                                 <th>Book Id</th>
                                 <th>Reserved Date</th>
@@ -84,6 +86,7 @@ if ($result) {
                                 <?php foreach ($datas as $key => $reserve) : ?>
                                     <tr>
                                         <td><input type="checkbox" id=<?php echo $reserve['rid'] ?>></td>
+                                        <td><?php echo $reserve['rid'] ?></td>
                                         <td><?php echo $reserve['stdnum'] ?></td>
                                         <td><?php echo $reserve['bkid']; ?></td>
                                         <td><?php echo $reserve['reserved_date']; ?></td>

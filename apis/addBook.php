@@ -8,8 +8,8 @@
     $bookname = $_POST["bookname"];
     $cate = $_POST["cate"];
     $img = $_POST["img"];
-    // 尋找帳號密碼
-    $sql = "INSERT INTO books VALUES (DEFAULT, '$isbn', '$pub', '$author', '$bookname', '$cate', 2, '$img')";
+
+    $sql = "INSERT INTO books VALUES (DEFAULT, '$isbn', '$pub', '$author', '$bookname', '$cate', 2, ($img == '') ? DEFAULT : '$img')";
 
     // 用mysqli_query方法執行(sql語法)將結果存在變數中
     $result = $connect->query($sql);
@@ -20,5 +20,4 @@
     } else {
         echo false;
     }
-    mysqli_free_result($result)
 ?>

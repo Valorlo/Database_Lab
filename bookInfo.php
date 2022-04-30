@@ -41,6 +41,12 @@ if ($result) {
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+        <script type="text/javascript">
+            (function() {
+                emailjs.init("qAJ1JIxo9MwzUlCBg");
+            })();
+        </script>
 </head>
 
 <body>
